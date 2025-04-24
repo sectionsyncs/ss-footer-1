@@ -1,0 +1,305 @@
+{{ 'ss-footer-1.css' | asset_url | stylesheet_tag }}
+{% style %}
+    #shopify-section-{{ section.id }} .ss-logo{
+        width: {{ section.settings.logo_width }}px;
+        height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .ss-inner-container{
+        width: {{ section.settings.container_width }}px;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    @media screen and (max-width: 749px) {
+        #shopify-section-{{ section.id }} .ss-logo{
+            width: {{ section.settings.logo_width_m }}px;
+        }
+    }
+{% endstyle %}
+<div class="ss-inner-container">
+    <div class="ss-top-container">
+        {% for block in section.blocks %}
+            <div class="ss-column">
+                {% case block.type %}
+                    {% when 'link_list' %}
+                        <div class="ss-column-wrapper ss-links-wrapper">
+                            {% if block.settings.title != blank %}
+                                <h3 class="ss-title">{{ block.settings.link_list.title }}</h3>
+                            {% else %}
+                                <h3 class="ss-title">{{ block.settings.link_list.title }}</h3>
+                            {% endif %}
+                            <ul class="ss-links">
+                                {% for link in block.settings.link_list.links %}
+                                    <li class="ss-link-item">
+                                        <a href="{{ link.url }}" class="ss-link">{{ link.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>   
+                        </div>                        
+                    {% when 'newsletter' %}
+                        <div class="ss-column-wrapper ss-newsletter-wrapper">
+                            <h3 class="ss-title">
+                                {% if block.settings.title != blank %}
+                                    {{ block.settings.title }}
+                                {% endif %}
+                            </h3>
+                            {% form 'customer', class: 'ss-newsletter-form' %}
+                                <div class="ss-form-field">
+                                    <input
+                                    id="NewsletterForm--{{ section.id }}"
+                                    type="email"
+                                    name="contact[email]"
+                                    class="ss-field__input"
+                                    value="{{ form.email }}"
+                                    aria-required="true"
+                                    autocorrect="off"
+                                    autocapitalize="off"
+                                    autocomplete="email"
+                                    {% if form.errors %}
+                                        autofocus
+                                        aria-invalid="true"
+                                        aria-describedby="Newsletter-error--{{ section.id }}"
+                                    {% elsif form.posted_successfully? %}
+                                        aria-describedby="Newsletter-success--{{ section.id }}"
+                                    {% endif %}
+                                    placeholder="Enter your email"
+                                    required
+                                    > 
+                                    <label class="ss-field__label" for="NewsletterForm--{{ section.id }}">
+                                        Email
+                                    </label>
+                                    <button
+                                    type="submit"
+                                    class="ss-newsletter-form__button ss-field__button"
+                                    name="commit"
+                                    id="Subscribe"
+                                    aria-label="Subscribe"
+                                    >
+                                    <span class="ss-svg-wrapper">
+                                        <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.23347 13L14.8898 7.42846C15.4106 6.91519 15.4106 6.08324 14.8898 5.57154L9.23347 0L7.34788 1.8581L10.7279 5.18669H0L0 7.81292H10.7279L7.34788 11.1427L9.23347 13Z" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                    </button>
+                                </div>
+                            {% endform %}
+                            <div class="rte ss-rte">
+                                {% if block.settings.description != blank %}
+                                    {{ block.settings.description }}
+                                {% endif %}
+                            </div>
+                        </div>
+                {% endcase %}
+            </div>
+        {% endfor %}
+    </div>
+    <hr class="ss-divider" />
+    <div class="ss-bottom-container">
+        <div class="ss-footer-logo">
+            {% if section.settings.logo %}
+                <img class="ss-logo" src="{{ section.settings.logo | img_url: '300x' }}" alt="Logo" />
+            {% endif %}
+        </div>
+        <div class="ss-footer-links-wrapper">
+            <ul class="ss-footer-links">
+                {% for link in section.settings.bottom_link.links %}
+                    <li class="ss-link-item">
+                        <a href="{{ link.url }}" class="ss-link">{{ link.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="ss-footer-social-wrapper">
+            <ul class="ss-footer-social">
+                {% if section.settings.facebook %}
+                    <li class="ss-social-link-item">
+                        <a class="ss-social-link" href="{{ section.settings.facebook }}" target="_blank">
+                            {% render 'ss-social-icon', icon: "Facebook" %}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if section.settings.twitter %}
+                    <li class="ss-social-link-item">
+                        <a class="ss-social-link" href="{{ section.settings.twitter }}" target="_blank">
+                            {% render 'ss-social-icon', icon: "Twitter" %}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if section.settings.instagram %}
+                    <li class="ss-social-link-item">
+                        <a class="ss-social-link" href="{{ section.settings.instagram }}" target="_blank">
+                            {% render 'ss-social-icon', icon: "Instagram" %}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if section.settings.pinterest %}
+                    <li class="ss-social-link-item">
+                        <a class="ss-social-link" href="{{ section.settings.pinterest }}" target="_blank">
+                            {% render 'ss-social-icon', icon: "Pinterest" %}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if section.settings.youtube %}
+                    <li class="ss-social-link-item">
+                        <a class="ss-social-link" href="{{ section.settings.youtube }}" target="_blank">
+                            {% render 'ss-social-icon', icon: "Youtube" %}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if section.settings.linked_in %}
+                    <li class="ss-social-link-item">
+                        <a class="ss-social-link" href="{{ section.settings.linked_in }}" target="_blank">
+                            {% render 'ss-social-icon', icon: "LinkedIn" %}
+                        </a>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </div>
+    </div>
+    <div class="ss-footer-bottom">
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+    </div>
+</div>
+{% schema %}
+    {
+        "name": "SS Footer 1",
+        "class": "ss-footer-1",
+        "tag": "footer",
+        "presets": [
+            {
+                "name":"SS Footer 1"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "link_list",
+                "name": "Links",
+                "limit": 4,
+                "settings": [
+                    {
+                        "type": "link_list",
+                        "id": "link_list",
+                        "label": "Menu",
+                        "default": "footer"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Title"
+                    }
+                ]
+            },
+            {
+                "type": "newsletter",
+                "name": "Newsletter",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Title",
+                        "default": "Subscribe"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "description",
+                        "label": "Description",
+                        "default": "<p>Hello, we are Lift Media. Our goal is to translate the positive effects from revolutionizing how companies engage with their clients & their team.</p>"
+                    }
+                ]
+            }
+        ],
+        "settings": [
+            {
+                "type": "header",
+                "content": "Layout Settings"
+            },
+            {
+                "type": "range",
+                "id": "container_width",
+                "label": "Container Width",
+                "unit": "px",
+                "min": 1000,
+                "max": 2000,
+                "step": 50,
+                "default": 1450
+            },
+            {
+                "type": "header",
+                "content": "Footer Logo"
+            }   ,
+            {
+                "type": "image_picker",
+                "id": "logo",
+                "label": "Logo"
+            },
+            {
+                "type": "header",
+                "content": "Logo Width"
+            },
+            {
+                "type": "range",
+                "id": "logo_width",
+                "label": "Desktop",
+                "unit": "px",
+                "min": 40,
+                "max": 250,
+                "step": 5,
+                "default": 200
+            },
+            {
+                "type": "range",
+                "id": "logo_width_m",
+                "label": "Mobile",
+                "unit": "px",
+                "min": 20,
+                "max": 200,
+                "step": 5,
+                "default": 150
+            },
+            {
+                "type": "link_list",
+                "id": "bottom_link",
+                "label": "Bottom Link",
+                "default": "footer"
+            },
+            {
+                "type": "header",
+                "content": "Social Media"
+            },
+            {
+                "type": "url",
+                "id": "facebook",
+                "label": "Facebook URL"
+            },
+            {
+                "type": "url",
+                "id": "twitter",
+                "label": "Twitter URL"
+            },
+            {
+                "type": "url",
+                "id": "instagram",
+                "label": "Instagram URL"
+            },
+            {
+                "type": "url",
+                "id": "pinterest",
+                "label": "Pinterest URL"
+            },
+            {
+                "type": "url",
+                "id": "youtube",
+                "label": "YouTube URL"
+            },
+            {
+                "type": "url",
+                "id": "linked_in",
+                "label": "LinkedIn URL"
+            }
+        ]
+    }
+{% endschema %}
